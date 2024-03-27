@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Mastery</title>
+    <!-- Import Styles -->
+    <link rel="stylesheet" href="./assets/styles.css" />
+    <!-- Import Vue.js -->
+    <script src="https://unpkg.com/vue@3.0.11/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="nav-bar"></div>
+
+      <!-- Les " {{ moustaches }} " permettent d'afficher une variable ou propriété calculée venant du .js -->
+      <div class="cart">Cart({{ cart.length }})</div>
+
+      <!-- .legth car on veut avoir le nombre total de produit dans la liste, et non l'id du produit -->
+      <product-display :premium="premium" @add-to-cart="addProductToCart" @remove-from-cart="removeProductFromCart"></product-display> <!-- Instantation d'un product display -->
+      <product-display :premium="premium" @add-to-cart="addProductToCart" @remove-from-cart="removeProductFromCart"></product-display>
+
+      </div>
+    </div>
+
+    <!-- Import App -->
+    <script src="./main.js"></script>
+
+    <!-- Import Components  NE PAS OUBLIER D'IMPORTER CHAQUE COMPONENTS -->
+    <script src="./components/ProductDisplay.js"></script>
+
+    <script src="./components/ProductDetails.js"></script>
+
+    <!-- Mount App -->
+    <script>
+      const mountedApp = app.mount('#app')
+    </script>
+  </body>
+</html>
