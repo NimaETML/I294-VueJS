@@ -6,21 +6,22 @@ app.component("product-display", {
       required: true,
     },
   },
-  /*html*/
-  template: `      <div class="product-display">
-<div class="product-container">
-  <div class="product-image"
-  :class="{ 'out-of-stock-img': !inStock }"> <!-- si des tirait (Kebab-case) alors single quote -->
-    <img v-bind:src="image"> <!-- les v-bind: sont des liaison unidirectionnelle -->
-  </div>
-  <div class="product-info">
-    <h1>{{ fullTitle }}</h1>
-    <p v-if="inStock">In Stock</p>  <!-- Si le produit est en stock, alors afficher ce praragraph -->
-    <p v-else>Out of Stock</p>      <!-- Sinon, afficher celui-ci -->
+  template:
+    /*html*/
+    `<div class="product-display">
+      <div class="product-container">
+      <div class="product-image"
+      :class="{ 'out-of-stock-img': !inStock }"> <!-- si des tirait (Kebab-case) alors single quote -->
+      <img v-bind:src="image"> <!-- les v-bind: sont des liaison unidirectionnelle -->
+      </div>
+      <div class="product-info">
+        <h1>{{ fullTitle }}</h1>
+        <p v-if="inStock">In Stock</p>  <!-- Si le produit est en stock, alors afficher ce praragraph -->
+        <p v-else>Out of Stock</p>      <!-- Sinon, afficher celui-ci -->
 
-    <p>Shipping: {{ shippingPrice }}</p>
+        <p>Shipping: {{ shippingPrice }}</p>
     
-    <product-details :details="details"></product-details> <!-- Appel du component "ProductDetails" pour l'affichage des détails du produit -->
+        <product-details :details="details"></product-details> <!-- Appel du component "ProductDetails" pour l'affichage des détails du produit -->
 
      <!-- cercle pour la couleur, appel la methode updateVariant quand la souris est au dessu de l'element--> 
     <div 
@@ -48,6 +49,9 @@ app.component("product-display", {
     v-on:click="removeFromCart">
     Remove Cart
   </button>
+
+  <review-list v-if="reviews.length" :reviews="reviews"></review-list>  <!-- instance de la liste des reviews, n'existe que si la liste "reviews" n'est pas vide -->
+  <review-form @review-submitted="addReview"></review-form>             <!-- instance d'un formulaire listen au review-submitted, quand il se produit, déclanche la méthode "addReview" -->
   </div>
 </div>
 </div>`,
@@ -61,8 +65,9 @@ app.component("product-display", {
       // Variant séléctionné
       selectedVariant: 0,
       // Détails du produit
-      details: ["50% cotton", "30% wool", "20% polyester"],
-      // Différent variants du produit, chaqun a un ID, une couleur, une image et une quantité
+      details: ["50% cotton", "30% wool", "20% polyester"], // Différent variants du produit, chaqun a un ID, une couleur, une image et une quantité
+      // Liste des information d'un review
+      reviews: [],
       variants: [
         {
           id: 2234,
@@ -92,6 +97,10 @@ app.component("product-display", {
     // Mis à jour du "Variant" d'un produit
     updateVariant(index) {
       this.selectedVariant = index;
+    },
+    // Ajoute une review dans la liste des reviews
+    addReview(review) {
+      this.reviews.push(review);
     },
   },
   // Option "computed" qui permet de calclter des propriété calculée, ces Options aggissent comme des méthodes, mais elles se mette à jour à chaque "render" (changement du DOM)
